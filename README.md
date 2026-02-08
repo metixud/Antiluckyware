@@ -8,11 +8,19 @@ By blocking these endpoints, AntiLuckyWare can help reduce communication between
 
 ## What this project does
 
-- Blocks known LuckyWare domains and IPs
+- **Multi-Layer Protection System**
+- Blocks known LuckyWare domains and IPs via HOSTS file
+- Creates Windows Firewall rules to block malicious IPs
+- Scans and terminates malicious processes (Berok.exe, Retev.exe)
+- Detects and removes malware files from system directories
+- Monitors active network connections to malicious servers
+- Checks for suspicious scheduled tasks
+- Scans project files (.vcxproj) for malicious build events
+- Scans imgui_impl_win32.cpp files for obfuscated malware code
+- Verifies Windows SDK integrity
 - Works system-wide for all applications
-- Uses the Windows hosts file
 - Persists after reboot
-- Does not rely on antivirus software
+- Does not rely solely on antivirus software
 
 ## What this project does not do
 
@@ -27,8 +35,46 @@ By blocking these endpoints, AntiLuckyWare can help reduce communication between
 
 ## Usage
 
-Run the provided `.bat` file as Administrator.  
-The script will add the listed domains to the hosts file and flush the DNS cache.
+### C++ Application (Recommended)
+1. Build the Anti-Luckyware.exe from the Visual Studio project
+2. Run as Administrator
+3. Optionally provide a project path to scan: `Anti-Luckyware.exe "C:\path\to\project"`
+
+The application will:
+- Scan the provided project directory for infected files
+- Scan Windows SDK for compromise
+- Display detailed results and recommendations
+
+
+## Blocked Domains & IPs
+
+### Domains (22)
+- i-like.boats
+- powercat.dog
+- devruntime.cy
+- zetolacs-cloud.top
+- frozi.cc
+- exo-api.tf
+- nuzzyservices.com
+- darkside.cy
+- balista.lol
+- phobos.top
+- phobosransom.com
+- pee-files.nl
+- vcc-library.uk
+- luckyware.co
+- luckyware.cc
+- luckyware.pw
+- dhszo.darkside.cy
+- risesmp.net
+- luckystrike.pw
+- krispykreme.top
+- vcc-redistrbutable.help
+- i-slept-with-ur.mom
+
+### IP Addresses (2)
+- 91.92.243.218
+- 188.114.96.11
 
 ## Disclaimer
 
