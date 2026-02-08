@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Anti-Luckyware/Anti-Luckyware.vcxproj" Id="9c788499-3213-4be3-aa26-1c6fee31c9e0" />
+</Solution>
