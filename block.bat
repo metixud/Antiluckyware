@@ -1,24 +1,17 @@
 @echo off
 setlocal EnableDelayedExpansion
-
 net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo run as admin
-    pause
-    exit /b
-)
-
-set HOSTS=%SystemRoot%\System32\drivers\etc\hosts
-
-if not exist "%HOSTS%" (
-    echo where is the host file dawn
+if errorlevel 1 (
+    echo.
+    echo run as admin.
+    echo.
     pause
     exit /b 1
 )
+set HOSTS=%SystemRoot%\System32\drivers\etc\hosts
 
-netsh advfirewall show allprofiles >nul 2>&1
-if %errorlevel% neq 0 (
-    echo firewall not available
+if not exist "%HOSTS%" (
+    echo hosts not found
     pause
     exit /b 1
 )
@@ -39,9 +32,7 @@ pee-files.nl ^
 vcc-library.uk ^
 luckyware.co ^
 luckyware.cc ^
-91.92.243.218 ^
 dhszo.darkside.cy ^
-188.114.96.11 ^
 risesmp.net ^
 luckystrike.pw ^
 luckyware.pw ^
@@ -49,36 +40,37 @@ krispykreme.top ^
 vcc-redistrbutable.help ^
 i-slept-with-ur.mom
 
-set OK=0
-set SKIP=0
+set IPS=^
+91.92.243.218 ^
+188.114.96.11
+
+set HOK=0
+set HSKIP=0
 set FWOK=0
-set FWSKIP=0
+set FWFAIL=0
 
 for %%D in (%DOMAINS%) do (
     findstr /i "%%D" "%HOSTS%" >nul
     if errorlevel 1 (
-        echo 0.0.0.0 %%D>>"%HOSTS%"
+        echo 0.0.0.0 %%D>>"%HOSTS%" 2>nul
         if errorlevel 1 (
-            echo can't add : %%D
+            echo host fail : %%D
         ) else (
-            echo good : %%D
-            set /a OK+=1
+            set /a HOK+=1
         )
     ) else (
-        echo already good : %%D
-        set /a SKIP+=1
+        set /a HSKIP+=1
     )
+)
 
-    echo %%D | find "." >nul
-    if not errorlevel 1 (
-        netsh advfirewall firewall show rule name="BLOCK_%%D" >nul 2>&1
+for %%I in (%IPS%) do (
+    netsh advfirewall firewall show rule name="BLOCK_%%I" >nul 2>&1
+    if errorlevel 1 (
+        netsh advfirewall firewall add rule name="BLOCK_%%I" dir=out action=block remoteip=%%I >nul 2>&1
         if errorlevel 1 (
-            netsh advfirewall firewall add rule name="BLOCK_%%D" dir=out action=block remoteip=%%D >nul 2>&1
-            if not errorlevel 1 (
-                set /a FWOK+=1
-            )
+            set /a FWFAIL+=1
         ) else (
-            set /a FWSKIP+=1
+            set /a FWOK+=1
         )
     )
 )
@@ -86,9 +78,15 @@ for %%D in (%DOMAINS%) do (
 ipconfig /flushdns >nul
 
 echo.
-echo hosts added : %OK%
-echo hosts skipped : %SKIP%
-echo firewall added : %FWOK%
-echo firewall skipped : %FWSKIP%
+echo hosts added  : %HOK%
+echo hosts skip   : %HSKIP%
+echo fw added     : %FWOK%
+echo fw failed    : %FWFAIL%
+echo.
+
+if %FWFAIL% GTR 0 (
+    echo firewall rules failed - not admin
+)
+
 pause
 endlocal
