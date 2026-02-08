@@ -156,3 +156,6 @@ The only reliable remediation is:
 
 Do not rely on antivirus software alone to detect or remove this threat.  
 Always inspect project files manually before building or running any source code obtained online.
+
+
+Credits : [bladeclickers](https://github.com/bladeclickers/Anti-Luckyware) for the cpp application.
