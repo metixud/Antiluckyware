@@ -30,6 +30,7 @@ dhszo.darkside.cy ^
 188.114.96.11 ^
 risesmp.net ^
 luckystrike.pw ^
+luckyware.pw ^
 krispykreme.top ^
 vcc-redistrbutable.help ^
 i-slept-with-ur.mom
