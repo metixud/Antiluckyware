@@ -13,6 +13,7 @@ set DOMAINS=^
 i-like.boats ^
 devruntime.cy ^
 zetolacs-cloud.top ^
+devruntime.cy ^
 frozi.cc ^
 exo-api.tf ^
 nuzzyservices.com ^
