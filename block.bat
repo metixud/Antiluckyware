@@ -82,6 +82,7 @@ echo hosts added  : %HOK%
 echo hosts skip   : %HSKIP%
 echo fw added     : %FWOK%
 echo fw failed    : %FWFAIL%
+echo good.
 echo.
 
 if %FWFAIL% GTR 0 (
