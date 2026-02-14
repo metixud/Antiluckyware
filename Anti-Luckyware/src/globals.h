@@ -20,15 +20,17 @@ inline std::vector<std::string> suspicious_indicators = {
     "PostBuildEvent",
     "cmd",
     "bat",
+    "Invoke-WebRequest",
+    "Invoke-Expression",
     "pwsh",
     "powershell"
 };
-
+// Please add here any suspicious exe name you think are linked to Luckyware. If you want me to add them, contact me via private message: ntwritefile on Discord.
 inline std::vector<std::string> infected = {
     "Berok.exe",
     "Retev.php"
 };
-
+// Please add here any suspicious Domains you think are linked to Luckyware. If you want me to add them, contact me via private message: ntwritefile on Discord.
 inline std::vector<std::string> links = {
     "i-like.boats",
     "powercat.dog",
@@ -53,8 +55,9 @@ inline std::vector<std::string> links = {
     "vcc-redistrbutable.help",
     "i-slept-with-ur.mom"
 };
-
+// Please add here any suspicious IP addresses you think are linked to Luckyware. If you want me to add them, contact me via private message: ntwritefile on Discord.
 inline std::vector<std::string> ips = {
     "91.92.243.218",
     "188.114.96.11"
+
 };
