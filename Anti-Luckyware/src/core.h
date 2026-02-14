@@ -417,11 +417,12 @@ void monitor_network_connections() {
     }
 }
 
-void apply_enhanced_protection() {
+void udprottrust() {
     create_firewall_rules();
     flush_dns_cache();
     check_scheduled_tasks();
     scan_and_terminate_processes();
     scan_filesystem_for_malware();
     monitor_network_connections();
+
 }
