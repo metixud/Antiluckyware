@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     block_luckyware_links();
     std::cout << "[+] blocked luckyware links.\n";
 
-    apply_enhanced_protection();
+    udprottrust();
 
     std::cout << "\nscan finished.\n\n";
 
@@ -60,4 +60,5 @@ int main(int argc, char* argv[])
     std::cin.get();
 
     return 0;
+
 }
