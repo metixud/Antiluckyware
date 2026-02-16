@@ -120,18 +120,6 @@ or any hidden PowerShell download or execution logic, the project is compromised
 
 If you are unsure, open the file in a plain text editor such as Notepad and review it carefully before proceeding.
 
-## Known Infection Techniques
-
-LuckyWare uses advanced process injection techniques.
-
-- Injects malicious payloads into legitimate Windows processes such as `dllhost.exe` or `svchost.exe`
-- Modifies `ntdll.dll` in memory to evade detection
-- Hooks low-level Windows APIs to hide memory regions from antivirus scanners
-
-Examples include:
-- Patching `NtManageHotPatch64` to prevent memory patching
-- Hooking `ZwQueryVirtualMemory` to return falsified results during scans
-
 ## Additional Files to Inspect
 
 - `imgui_impl_win32.cpp`  
