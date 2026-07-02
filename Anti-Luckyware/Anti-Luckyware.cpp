@@ -7,6 +7,8 @@
 namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
+    bool project_scanned = false;
+
     if (argc >= 2) {
         std::string path = argv[1];
         for (int i = 2; i < argc; i++)
@@ -18,6 +20,7 @@ int main(int argc, char* argv[]) {
         else {
             scan_vcxproj(path);
             scan_imgui_files(path);
+            project_scanned = true;
         }
     }
 
@@ -26,12 +29,17 @@ int main(int argc, char* argv[]) {
     std::cout << "\n[ok] scan done. suspicious: " << suspicious_count
         << " | infected: " << infected_count << "\n\n";
 
-    if (infected_flag)
-        std::cout << "[!!] project infected — do not open.\n";
-    else if (suspicious)
-        std::cout << "[!]  project suspicious — review vcxproj.\n";
-    else
-        std::cout << "[ok] project appears clean.\n";
+    if (project_scanned) {
+        if (infected_flag)
+            std::cout << "[!!] project infected — do not open.\n";
+        else if (suspicious)
+            std::cout << "[!] project suspicious — review vcxproj.\n";
+        else
+            std::cout << "[ok] project appears clean.\n";
+    }
+    else {
+        std::cout << "[i] no project added.\n";
+    }
 
     std::cout << "\npress enter to exit...\n";
     std::cin.get();
