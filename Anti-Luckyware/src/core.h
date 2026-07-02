@@ -6,16 +6,39 @@
 #include <windows.h>
 #include <tlhelp32.h>
 #include <sstream>
+#include <thread>
+#include <atomic>
 
 #include "globals.h"
 
 namespace fs = std::filesystem;
+
+inline std::atomic<bool> stop(false);
+
+inline void animation(const std::string& message) {
+    const int dots_count = 3;
+    int current_dots = 0;
+
+    while (!stop) {
+        std::cout << "\r" << message;
+        for (int i = 0; i < current_dots; i++) std::cout << ".";
+        for (int i = current_dots; i < dots_count; i++) std::cout << " ";
+        std::cout.flush();
+        
+        current_dots = (current_dots + 1) % (dots_count + 1);
+        Sleep(200);
+    }
+    
+    std::cout << "\r" << std::string(message.length() + dots_count, ' ') << "\r";
+    std::cout.flush();
+}
 
 inline std::string read_file_to_string(const fs::path& path) {
     std::ifstream file(path, std::ios::binary);
     if (!file) return {};
     return { std::istreambuf_iterator<char>(file), {} };
 }
+
 
 inline std::string get_env_variable(const char* var) {
     char* val = nullptr;
@@ -277,27 +300,67 @@ void scanfs() {
 
 
 void monitornetwork() {
-    const std::string output = execute_command_with_output("netstat -ano");
+    stop = false;
+    std::thread anim(animation, "checking suspicious connections");
+    
+    const std::string netstat_out = execute_command_with_output("netstat -ano");
     bool found = false;
 
     for (const auto& ip : ips) {
-        if (output.find(ip) == std::string::npos) continue;
-        std::cout << "[!] " << ip << "\n";
+        if (netstat_out.find(ip) == std::string::npos) continue;
+        stop = true;
+        anim.join();
+        std::cout << "[!] IP: " << ip << "\n";
         suspicious = true;
         suspicious_count++;
         found = true;
     }
 
+    for (const auto& domain : links) {
+        const std::string resolve = execute_command_with_output("nslookup " + domain);
+
+        if (resolve.find("Non-existent") != std::string::npos ||
+            resolve.find("can't find") != std::string::npos) continue;
+
+        std::istringstream stream(resolve);
+        std::string line;
+        while (std::getline(stream, line)) {
+            if (line.find("Address") == std::string::npos) continue;
+            if (line.find("::") != std::string::npos) continue;
+
+            size_t pos = line.find_last_of(" ");
+            if (pos == std::string::npos) continue;
+
+            std::string resolved_ip = line.substr(pos + 1);
+            if (resolved_ip.empty() || resolved_ip.find(".") == std::string::npos) continue;
+
+            if (netstat_out.find(resolved_ip) != std::string::npos) {
+                if (!found) {
+                    stop = true;
+                    anim.join();
+                }
+                std::cout << "[!] Domain: " << domain << " (" << resolved_ip << ")\n";
+                suspicious = true;
+                suspicious_count++;
+                found = true;
+                break;
+            }
+        }
+    }
+
+    stop = true;
+    if (anim.joinable()) anim.join();
+
     if (!found) std::cout << "[ok] No suspicious connections.\n";
 }
 
 void udprottrust() {
+    monitornetwork();  // we check the network first, because if we add the firewall rules first we can't check if the ip is reached.
     create_firewall_rules();
     flush_dns();
     scan_st();
     scansusprocess();
     scanfs();
-    monitornetwork();
     scan_winsdk();
-	block_luckyware_links();
+    block_luckyware_links();
 }
