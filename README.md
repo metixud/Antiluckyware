@@ -48,7 +48,7 @@ The application will:
 
 ## Blocked Domains & IPs
 
-### Domains (22)
+### Domains (23)
 - i-like.boats
 - powercat.dog
 - devruntime.cy
