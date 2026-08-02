@@ -33,11 +33,11 @@ inline std::vector<std::string> links = {
     "vcc-library.uk", "luckyware.co", "luckyware.cc",
     "luckyware.pw", "dhszo.darkside.cy", "risesmp.net",
     "luckystrike.pw", "krispykreme.top",
-    "vcc-redistrbutable.help", "i-slept-with-ur.mom"
+    "vcc-redistrbutable.help", "i-slept-with-ur.mom",
+    "luckyware.cy"
 };
 
 // Please add here any suspicious IP addresses you think are linked to Luckyware. If you want me to add them, contact me via private message: ntwritefile on Discord.
 inline std::vector<std::string> ips = {
-    "91.92.243.218",
-    "188.114.96.11"
+    "91.92.243.218"
 };
