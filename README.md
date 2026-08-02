@@ -71,10 +71,10 @@ The application will:
 - krispykreme.top
 - vcc-redistrbutable.help
 - i-slept-with-ur.mom
+- luckyware.cy # thanks to [burger110](https://github.com/burger110)
 
-### IP Addresses (2)
+### IP Addresses (1)
 - 91.92.243.218
-- 188.114.96.11
 
 ## Disclaimer
 
